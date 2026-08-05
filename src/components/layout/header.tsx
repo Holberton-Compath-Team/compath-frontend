@@ -75,7 +75,7 @@ function Header() {
           aria-expanded={isMenuOpen}
           aria-controls="mobile-nav"
           onClick={() => setIsMenuOpen((open) => !open)}
-          className="text-text-primary focus-visible:ring-ring tablet:hidden flex size-10 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+          className="text-text-primary focus-visible:ring-ring tablet:hidden flex size-12 items-center justify-center rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
         >
           {isMenuOpen ? (
             <X className="size-6" aria-hidden="true" />
