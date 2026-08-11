@@ -33,6 +33,8 @@ async function resolveErrorMessage(response: Response): Promise<string> {
   return response.statusText || "Sorğu uğursuz oldu";
 }
 
+const UNAUTHENTICATED_PATHS = ["/login", "/signup"];
+
 function redirectToLogin(): void {
   if (typeof window === "undefined") {
     return;
@@ -62,7 +64,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   if (!response.ok) {
     const message = await resolveErrorMessage(response);
 
-    if (response.status === 401) {
+    if (response.status === 401 && !UNAUTHENTICATED_PATHS.includes(path)) {
       redirectToLogin();
     }
 
