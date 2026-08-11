@@ -214,6 +214,30 @@ Hər data-asılı komponent üç vəziyyəti standart şəkildə handle edir: lo
 - [ ] Heç bir console error/warning yoxdur
 - [ ] `services/` qatı mövcuddur və komponentlər ordan istifadə edir (birbaşa fetch yoxdur)
 
+---
+
+## 13. Sprint 2 əlavələri — Auth və CRUD qaydaları
+
+### Token idarəsi
+- Backend login/signup uğurlu olanda token-i response body-də JSON kimi qaytarır: `{"token": "<jwt>"}`, cookie YOXDUR.
+- Token yalnız `src/services/auth/` daxilində oxunur/yazılır — komponentlər heç vaxt birbaşa `localStorage`-a müraciət etmir, yalnız `services/auth`-un təqdim etdiyi funksiyalardan (məs. `getToken()`, `setToken()`, `clearToken()`) istifadə edir.
+- Bütün qorunan (protected) sorğularda token `Authorization: Bearer <token>` header-i ilə göndərilir — bu, `lib/api-client.ts`-də mərkəzləşdirilir, hər sorğuda əl ilə əlavə edilmir.
+- Token 24 saat etibarlıdır. Müddəti bitmiş/etibarsız token ilə edilən sorğu 401 qaytararsa, istifadəçi avtomatik `/login`-ə yönləndirilir və `localStorage`-dan token silinir.
+
+### Protected route qaydası
+- `(portal)` route group-undakı bütün səhifələr token yoxlaması edir. Token yoxdursa `/login`-ə yönləndirir.
+
+### Form/Error state pattern-i (bütün formalar üçün məcburi)
+- Hər forma Zod schema ilə client-side validasiya edir, submit-dən əvvəl.
+- Backend xətası HTTP 400 + `{"error": "mesaj"}` formatında qayıdır (field-based deyil, qlobal mesajdır) — forma bu mesajı görünən bir error banner/text kimi göstərir, konsola atmır.
+- Submit zamanı loading state məcburidir (düymə disabled + spinner/mətn dəyişikliyi).
+- Uğurlu əməliyyatdan sonra aydın bildiriş (toast/mesaj) göstərilir.
+
+### Data siyahıları (GET əməliyyatları) üçün məcburi 3 state
+- Loading: skeleton (spinner deyil, KUDS radius/shadow-na uyğun skeleton kart).
+- Empty: "hələ heç nə yoxdur" mesajı + aydın next step (məs. "İlk müraciətini yarat" düyməsi).
+- Error: aydın, təqsirkar axtarmayan mesaj + yenidən cəhd düyməsi.
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know
