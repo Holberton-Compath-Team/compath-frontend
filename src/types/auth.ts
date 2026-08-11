@@ -9,8 +9,15 @@ export interface LoginPayload {
   password: string;
 }
 
+export interface AuthUser {
+  id: number;
+  fullname: string;
+  email: string;
+}
+
 export interface AuthResponse {
   token: string;
+  user: AuthUser;
 }
 
 export interface SignupResponse {
