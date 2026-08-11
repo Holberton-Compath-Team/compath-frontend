@@ -55,6 +55,7 @@ src/
   hooks/                  → custom hook-lar
   services/                → API çağırış qatı (bax §7) — komponentlər BURAYA müraciət edir, fetch-ə yox
   types/                   → TypeScript tipləri, backend ilə paylaşılacaq shape-lər
+  schemas/                 → Zod validasiya sxemləri (formalar üçün, bax §8)
   utils/                   → təmiz funksiyalar (formatlama, validasiya köməkçiləri)
   constants/               → statik məzmun (landing mətnləri, kateqoriya siyahısı və s.) — hardcode string yox
   styles/                  → globals.css, design tokens
