@@ -9,3 +9,10 @@ export const TICKET_STATUS_BADGE_VARIANT: Record<string, BadgeVariant> = {
 };
 
 export const DEFAULT_TICKET_STATUS_BADGE_VARIANT: BadgeVariant = "default";
+
+export const TICKET_DEPARTMENTS = [
+  "IT Dəstək",
+  "Akademik",
+  "İnzibati-Maliyyə",
+  "Digər",
+] as const;
