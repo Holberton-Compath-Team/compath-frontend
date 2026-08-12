@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -12,6 +13,7 @@ import { TICKET_DEPARTMENTS } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
 import { createTicketSchema, type CreateTicketFormValues } from "@/schemas/ticket.schema";
 import { createTicket } from "@/services/tickets";
+import { cn } from "@/utils/cn";
 
 const REDIRECT_DELAY_MS = 1200;
 
@@ -77,24 +79,33 @@ export function NewTicketForm() {
         <label htmlFor="ticket-department" className="text-small font-medium text-text-primary">
           Şöbə
         </label>
-        <select
-          id="ticket-department"
-          className={inputVariants({ hasError: Boolean(errors.department) })}
-          aria-invalid={Boolean(errors.department)}
-          aria-describedby={errors.department ? "ticket-department-error" : undefined}
-          disabled={isDone}
-          defaultValue=""
-          {...register("department")}
-        >
-          <option value="" disabled>
-            Şöbə seçin
-          </option>
-          {TICKET_DEPARTMENTS.map((department) => (
-            <option key={department} value={department}>
-              {department}
+        <div className="relative">
+          <select
+            id="ticket-department"
+            className={cn(
+              inputVariants({ hasError: Boolean(errors.department) }),
+              "appearance-none pr-8",
+            )}
+            aria-invalid={Boolean(errors.department)}
+            aria-describedby={errors.department ? "ticket-department-error" : undefined}
+            disabled={isDone}
+            defaultValue=""
+            {...register("department")}
+          >
+            <option value="" disabled>
+              Şöbə seçin
             </option>
-          ))}
-        </select>
+            {TICKET_DEPARTMENTS.map((department) => (
+              <option key={department} value={department}>
+                {department}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
+            aria-hidden="true"
+          />
+        </div>
         {errors.department && (
           <p id="ticket-department-error" role="alert" className="text-small text-danger">
             {errors.department.message}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
+import { ChevronDown, Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardActions, CardContent, CardTitle } from "@/components/ui/card";
@@ -63,19 +63,25 @@ export function TicketCard({ ticket }: TicketCardProps) {
         </div>
       </CardContent>
       <CardActions>
-        <select
-          aria-label="Status dəyiş"
-          className={cn(inputVariants(), "w-auto py-1")}
-          value={ticket.status}
-          disabled={statusMutation.isPending}
-          onChange={(event) => statusMutation.mutate(event.target.value)}
-        >
-          {TICKET_STATUSES.map((status) => (
-            <option key={status} value={status}>
-              {status}
-            </option>
-          ))}
-        </select>
+        <div className="relative">
+          <select
+            aria-label="Status dəyiş"
+            className={cn(inputVariants(), "w-auto appearance-none py-1 pr-8")}
+            value={ticket.status}
+            disabled={statusMutation.isPending}
+            onChange={(event) => statusMutation.mutate(event.target.value)}
+          >
+            {TICKET_STATUSES.map((status) => (
+              <option key={status} value={status}>
+                {status}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
+            aria-hidden="true"
+          />
+        </div>
         <button
           type="button"
           aria-label="Müraciəti sil"
