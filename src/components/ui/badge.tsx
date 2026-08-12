@@ -9,9 +9,9 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default: "bg-ku-green-soft text-ku-green-dark",
-        accent: "bg-ku-blue-light text-ku-green-dark",
-        success: "bg-success text-white",
-        warning: "bg-warning text-white",
+        accent: "bg-ku-blue-light text-text-primary",
+        success: "bg-ku-green-soft text-ku-green-dark",
+        warning: "bg-amber-100 text-amber-800",
         danger: "bg-danger text-white",
       },
     },
