@@ -10,3 +10,11 @@ export async function createTicket(
 ): Promise<CreateTicketResponse> {
   return apiClient.post<CreateTicketResponse>("/tickets", payload);
 }
+
+export async function updateTicketStatus(id: number, status: string): Promise<unknown> {
+  return apiClient.put<unknown>(`/tickets/${id}`, { status });
+}
+
+export async function deleteTicket(id: number): Promise<unknown> {
+  return apiClient.delete<unknown>(`/tickets/${id}`);
+}
