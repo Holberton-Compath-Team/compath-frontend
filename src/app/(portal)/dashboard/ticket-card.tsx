@@ -50,8 +50,10 @@ export function TicketCard({ ticket }: TicketCardProps) {
   return (
     <Card>
       <div className="flex items-start justify-between gap-4">
-        <CardTitle>{ticket.title}</CardTitle>
-        <Badge variant={badgeVariant}>{ticket.status}</Badge>
+        <CardTitle className="min-w-0 break-words">{ticket.title}</CardTitle>
+        <Badge variant={badgeVariant} className="shrink-0">
+          {ticket.status}
+        </Badge>
       </div>
       <CardContent className="flex flex-col gap-2">
         <p>{ticket.description}</p>
