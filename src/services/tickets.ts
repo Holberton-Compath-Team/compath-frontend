@@ -5,6 +5,10 @@ export async function getTickets(): Promise<Ticket[]> {
   return apiClient.get<Ticket[]>("/tickets");
 }
 
+export async function getAllTickets(): Promise<Ticket[]> {
+  return apiClient.get<Ticket[]>("/tickets/all");
+}
+
 export async function createTicket(
   payload: CreateTicketPayload,
 ): Promise<CreateTicketResponse> {
