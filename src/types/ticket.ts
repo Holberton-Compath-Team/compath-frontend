@@ -7,6 +7,13 @@ export interface Ticket {
   created_at: string;
 }
 
+export interface AdminTicket extends Ticket {
+  student: {
+    fullname: string;
+    email: string;
+  };
+}
+
 export interface CreateTicketPayload {
   title: string;
   description: string;

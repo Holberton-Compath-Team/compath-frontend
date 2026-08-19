@@ -1,12 +1,12 @@
 import { apiClient } from "@/lib/api-client";
-import type { CreateTicketPayload, CreateTicketResponse, Ticket } from "@/types/ticket";
+import type { AdminTicket, CreateTicketPayload, CreateTicketResponse, Ticket } from "@/types/ticket";
 
 export async function getTickets(): Promise<Ticket[]> {
   return apiClient.get<Ticket[]>("/tickets");
 }
 
-export async function getAllTickets(): Promise<Ticket[]> {
-  return apiClient.get<Ticket[]>("/tickets/all");
+export async function getAllTickets(): Promise<AdminTicket[]> {
+  return apiClient.get<AdminTicket[]>("/tickets/all");
 }
 
 export async function createTicket(
