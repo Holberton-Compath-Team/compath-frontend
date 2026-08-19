@@ -29,8 +29,8 @@ export function LoginForm() {
     setSubmitError(null);
 
     try {
-      await login(values.email, values.password);
-      router.push("/dashboard");
+      const response = await login(values.email, values.password);
+      router.push(response.user.role === "admin" ? "/admin" : "/dashboard");
     } catch (error) {
       setSubmitError(
         error instanceof ApiError ? error.message : "Gözlənilməz xəta baş verdi. Yenidən cəhd edin.",

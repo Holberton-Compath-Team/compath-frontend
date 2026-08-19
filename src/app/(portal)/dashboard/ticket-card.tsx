@@ -1,20 +1,17 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown, Trash2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardActions, CardContent, CardTitle } from "@/components/ui/card";
-import { inputVariants } from "@/components/ui/input";
 import {
   DEFAULT_TICKET_STATUS_BADGE_VARIANT,
   TICKET_STATUS_BADGE_VARIANT,
-  TICKET_STATUSES,
 } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
-import { deleteTicket, updateTicketStatus } from "@/services/tickets";
+import { deleteTicket } from "@/services/tickets";
 import type { Ticket } from "@/types/ticket";
-import { cn } from "@/utils/cn";
 import { formatDate } from "@/utils/format-date";
 
 interface TicketCardProps {
@@ -27,11 +24,6 @@ function resolveErrorMessage(error: unknown): string {
 
 export function TicketCard({ ticket }: TicketCardProps) {
   const queryClient = useQueryClient();
-
-  const statusMutation = useMutation({
-    mutationFn: (status: string) => updateTicketStatus(ticket.id, status),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tickets"] }),
-  });
 
   const deleteMutation = useMutation({
     mutationFn: () => deleteTicket(ticket.id),
@@ -63,25 +55,6 @@ export function TicketCard({ ticket }: TicketCardProps) {
         </div>
       </CardContent>
       <CardActions>
-        <div className="relative">
-          <select
-            aria-label="Status dəyiş"
-            className={cn(inputVariants(), "w-auto appearance-none py-1 pr-8")}
-            value={ticket.status}
-            disabled={statusMutation.isPending}
-            onChange={(event) => statusMutation.mutate(event.target.value)}
-          >
-            {TICKET_STATUSES.map((status) => (
-              <option key={status} value={status}>
-                {status}
-              </option>
-            ))}
-          </select>
-          <ChevronDown
-            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
-            aria-hidden="true"
-          />
-        </div>
         <button
           type="button"
           aria-label="Müraciəti sil"
@@ -92,11 +65,6 @@ export function TicketCard({ ticket }: TicketCardProps) {
           <Trash2 className="size-4" aria-hidden="true" />
         </button>
       </CardActions>
-      {statusMutation.isError && (
-        <p role="alert" className="text-small text-danger">
-          {resolveErrorMessage(statusMutation.error)}
-        </p>
-      )}
       {deleteMutation.isError && (
         <p role="alert" className="text-small text-danger">
           {resolveErrorMessage(deleteMutation.error)}

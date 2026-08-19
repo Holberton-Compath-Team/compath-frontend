@@ -239,6 +239,16 @@ Hər data-asılı komponent üç vəziyyəti standart şəkildə handle edir: lo
 - Empty: "hələ heç nə yoxdur" mesajı + aydın next step (məs. "İlk müraciətini yarat" düyməsi).
 - Error: aydın, təqsirkar axtarmayan mesaj + yenidən cəhd düyməsi.
 
+---
+
+## 14. Sprint 3 əlavələri — Rollar və Admin Panel
+
+- Backend login cavabına user.role sahəsi əlavə olunub: "student" | "admin".
+- Signup həmişə "student" yaradır, admin hesabları yalnız backend tərəfindən manual təyin olunur.
+- (portal) route group-u YALNIZ student üçündür. Yeni (admin) route group-u admin üçün ayrıca auth-guard ilə qorunur — həm token, həm role === "admin" yoxlanılır, uyğun deyilsə uyğun paneli yönləndirilir.
+- Ticket statusunu dəyişmək YALNIZ admin panelində mümkündür (PUT /api/tickets/<id> yalnız admin tokeni ilə işləyir). Tələbə dashboard-ında bu funksiya YOXDUR.
+- Yeni endpoint-lər: GET /api/tickets/all (admin, bütün ticket-lər + student.fullname/email), GET /api/services (açıq, xidmət kataloqu).
+
 <!-- BEGIN:nextjs-agent-rules -->
 
 # This is NOT the Next.js you know

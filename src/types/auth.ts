@@ -13,6 +13,7 @@ export interface AuthUser {
   id: number;
   fullname: string;
   email: string;
+  role: "student" | "admin";
 }
 
 export interface AuthResponse {
