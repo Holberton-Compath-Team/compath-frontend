@@ -7,6 +7,7 @@ export interface ServiceCategory {
   urgent?: boolean;
 }
 
+
 export interface HowItWorksStep {
   id: string;
   step: string;
