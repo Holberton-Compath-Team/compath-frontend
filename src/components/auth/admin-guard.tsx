@@ -10,6 +10,7 @@ interface AdminGuardProps {
   children: React.ReactNode;
 }
 
+
 export function AdminGuard({ children }: AdminGuardProps) {
   const router = useRouter();
   const token = useAuthToken();
