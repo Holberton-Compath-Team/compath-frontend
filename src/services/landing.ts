@@ -13,6 +13,7 @@ import type {
   WhyCompathItem,
 } from "@/types/landing";
 
+
 export async function getServiceCategories(): Promise<ServiceCategory[]> {
   return Promise.resolve(MOCK_SERVICE_CATEGORIES);
 }
