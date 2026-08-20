@@ -1,17 +1,17 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input, inputVariants } from "@/components/ui/input";
-import { TICKET_DEPARTMENTS } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
 import { createTicketSchema, type CreateTicketFormValues } from "@/schemas/ticket.schema";
+import { getServices } from "@/services/services";
 import { createTicket } from "@/services/tickets";
 import { cn } from "@/utils/cn";
 
@@ -20,16 +20,34 @@ const REDIRECT_DELAY_MS = 1200;
 export function NewTicketForm() {
   const router = useRouter();
   const queryClient = useQueryClient();
+  const searchParams = useSearchParams();
+  const departmentParam = searchParams.get("department");
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
 
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<CreateTicketFormValues>({
     resolver: zodResolver(createTicketSchema),
   });
+
+  const {
+    data: services,
+    isPending: isServicesPending,
+    isError: isServicesError,
+  } = useQuery({
+    queryKey: ["services"],
+    queryFn: getServices,
+  });
+
+  useEffect(() => {
+    if (departmentParam && services?.some((service) => service.name === departmentParam)) {
+      setValue("department", departmentParam);
+    }
+  }, [departmentParam, services, setValue]);
 
   async function onSubmit(values: CreateTicketFormValues) {
     setSubmitError(null);
@@ -48,6 +66,7 @@ export function NewTicketForm() {
   }
 
   const isDone = submitMessage !== null;
+  const isDepartmentDisabled = isDone || isServicesPending || isServicesError || services?.length === 0;
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-6" noValidate>
@@ -88,24 +107,37 @@ export function NewTicketForm() {
             )}
             aria-invalid={Boolean(errors.department)}
             aria-describedby={errors.department ? "ticket-department-error" : undefined}
-            disabled={isDone}
+            disabled={isDepartmentDisabled}
             defaultValue=""
             {...register("department")}
           >
-            <option value="" disabled>
-              Şöbə seçin
-            </option>
-            {TICKET_DEPARTMENTS.map((department) => (
-              <option key={department} value={department}>
-                {department}
-              </option>
-            ))}
+            {isServicesPending && <option value="">Yüklənir...</option>}
+
+            {!isServicesPending && !isServicesError && services?.length === 0 && (
+              <option value="">Hazırda xidmət mövcud deyil</option>
+            )}
+
+            {!isServicesPending && !isServicesError && services && services.length > 0 && (
+              <>
+                <option value="" disabled>
+                  Şöbə seçin
+                </option>
+                {services.map((service) => (
+                  <option key={service.id} value={service.name}>
+                    {service.name}
+                  </option>
+                ))}
+              </>
+            )}
           </select>
           <ChevronDown
             className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
             aria-hidden="true"
           />
         </div>
+        {isServicesError && (
+          <p className="text-small text-danger">Xidmətlər yüklənə bilmədi.</p>
+        )}
         {errors.department && (
           <p id="ticket-department-error" role="alert" className="text-small text-danger">
             {errors.department.message}

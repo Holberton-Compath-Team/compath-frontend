@@ -1,3 +1,5 @@
+import { Suspense } from "react";
+
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
@@ -13,7 +15,9 @@ export default function NewTicketPage() {
           <CardDescription>
             Probleminizi qısaca izah edin, uyğun şöbəyə yönləndirəcəyik.
           </CardDescription>
-          <NewTicketForm />
+          <Suspense fallback={null}>
+            <NewTicketForm />
+          </Suspense>
         </Card>
       </Container>
     </Section>
