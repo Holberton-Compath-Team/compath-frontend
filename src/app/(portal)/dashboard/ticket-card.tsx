@@ -73,3 +73,4 @@ export function TicketCard({ ticket }: TicketCardProps) {
     </Card>
   );
 }
+
