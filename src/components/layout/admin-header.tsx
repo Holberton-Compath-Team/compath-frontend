@@ -23,7 +23,7 @@ export function AdminHeader() {
       <Container className="flex h-full items-center justify-between gap-4">
         <div className="flex items-center gap-4">
           <Link
-            href="/admin/tickets"
+            href="/"
             className="text-h4 text-ku-green focus-visible:ring-ring rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             COMPATH

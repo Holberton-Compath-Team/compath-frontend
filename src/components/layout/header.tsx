@@ -7,9 +7,14 @@ import { Menu, X } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { NAV_LINKS } from "@/constants/navigation";
+import { useAuthToken } from "@/hooks/use-auth-token";
+import { useAuthUser } from "@/hooks/use-auth-user";
 
 function Header() {
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const token = useAuthToken();
+  const user = useAuthUser();
+  const panelHref = user?.role === "admin" ? "/admin/tickets" : "/dashboard";
 
   React.useEffect(() => {
     if (!isMenuOpen) return;
@@ -54,18 +59,29 @@ function Header() {
           </nav>
 
           <div className="tablet:flex hidden items-center gap-3">
-            <Link
-              href="/login"
-              className={buttonVariants({ variant: "secondary" })}
-            >
-              Daxil ol
-            </Link>
-            <Link
-              href="/register"
-              className={buttonVariants({ variant: "primary" })}
-            >
-              Qeydiyyat
-            </Link>
+            {token && user ? (
+              <Link
+                href={panelHref}
+                className={buttonVariants({ variant: "primary" })}
+              >
+                Panelim
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  className={buttonVariants({ variant: "secondary" })}
+                >
+                  Daxil ol
+                </Link>
+                <Link
+                  href="/register"
+                  className={buttonVariants({ variant: "primary" })}
+                >
+                  Qeydiyyat
+                </Link>
+              </>
+            )}
           </div>
         </div>
 
@@ -106,26 +122,41 @@ function Header() {
           </ul>
 
           <div className="mt-auto flex flex-col gap-3">
-            <Link
-              href="/login"
-              onClick={() => setIsMenuOpen(false)}
-              className={buttonVariants({
-                variant: "secondary",
-                className: "w-full",
-              })}
-            >
-              Daxil ol
-            </Link>
-            <Link
-              href="/register"
-              onClick={() => setIsMenuOpen(false)}
-              className={buttonVariants({
-                variant: "primary",
-                className: "w-full",
-              })}
-            >
-              Qeydiyyat
-            </Link>
+            {token && user ? (
+              <Link
+                href={panelHref}
+                onClick={() => setIsMenuOpen(false)}
+                className={buttonVariants({
+                  variant: "primary",
+                  className: "w-full",
+                })}
+              >
+                Panelim
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href="/login"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={buttonVariants({
+                    variant: "secondary",
+                    className: "w-full",
+                  })}
+                >
+                  Daxil ol
+                </Link>
+                <Link
+                  href="/register"
+                  onClick={() => setIsMenuOpen(false)}
+                  className={buttonVariants({
+                    variant: "primary",
+                    className: "w-full",
+                  })}
+                >
+                  Qeydiyyat
+                </Link>
+              </>
+            )}
           </div>
         </nav>
       )}

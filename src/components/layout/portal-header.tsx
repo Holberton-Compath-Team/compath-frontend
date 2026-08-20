@@ -43,7 +43,7 @@ export function PortalHeader({ isSidebarOpen, onToggleSidebar }: PortalHeaderPro
           </button>
 
           <Link
-            href="/dashboard"
+            href="/"
             className="text-h4 text-ku-green focus-visible:ring-ring rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
           >
             COMPATH
