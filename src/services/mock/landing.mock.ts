@@ -6,6 +6,7 @@ import type {
   WhyCompathItem,
 } from "@/types/landing";
 
+
 export const MOCK_SERVICE_CATEGORIES: ServiceCategory[] = [
   {
     id: "academic",
