@@ -11,7 +11,7 @@ const badgeVariants = cva(
         default: "bg-ku-green-soft text-ku-green-dark",
         accent: "bg-ku-blue-light text-text-primary",
         success: "bg-ku-green-soft text-ku-green-dark",
-        warning: "bg-amber-100 text-amber-800",
+        warning: "bg-warning/10 text-warning",
         danger: "bg-danger text-white",
       },
     },
