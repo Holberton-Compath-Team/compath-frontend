@@ -1,7 +1,8 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { Trash2 } from "lucide-react";
+import { ArrowRight, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardActions, CardContent, CardTitle } from "@/components/ui/card";
@@ -54,7 +55,14 @@ export function TicketCard({ ticket }: TicketCardProps) {
           <span>{formatDate(ticket.created_at)}</span>
         </div>
       </CardContent>
-      <CardActions>
+      <CardActions className="justify-between">
+        <Link
+          href={`/tickets/${ticket.id}`}
+          className="inline-flex items-center gap-1 text-small font-medium text-ku-green hover:text-ku-green-dark"
+        >
+          Detallara bax
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
         <button
           type="button"
           aria-label="Müraciəti sil"

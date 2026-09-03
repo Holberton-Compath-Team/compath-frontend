@@ -1,7 +1,8 @@
 "use client";
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { ChevronDown } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
+import Link from "next/link";
 
 import { Badge } from "@/components/ui/badge";
 import { Card, CardActions, CardContent, CardTitle } from "@/components/ui/card";
@@ -51,11 +52,18 @@ export function AdminTicketCard({ ticket }: AdminTicketCardProps) {
           <span>{formatDate(ticket.created_at)}</span>
         </div>
         <div className="flex flex-wrap gap-4 text-small text-text-secondary">
-          <span>{ticket.student.fullname}</span>
-          <span>{ticket.student.email}</span>
+          <span>{ticket.student?.fullname ?? "Naməlum tələbə"}</span>
+          <span>{ticket.student?.email ?? "—"}</span>
         </div>
       </CardContent>
-      <CardActions>
+      <CardActions className="justify-between">
+        <Link
+          href={`/admin/tickets/${ticket.id}`}
+          className="inline-flex items-center gap-1 text-small font-medium text-ku-green hover:text-ku-green-dark"
+        >
+          Detallara bax
+          <ArrowRight className="size-4" aria-hidden="true" />
+        </Link>
         <div className="relative">
           <select
             aria-label="Status dəyiş"

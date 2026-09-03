@@ -1,4 +1,5 @@
 import type { BadgeProps } from "@/components/ui/badge";
+import type { TicketMessage } from "@/types/ticket";
 
 type BadgeVariant = NonNullable<BadgeProps["variant"]>;
 
@@ -11,3 +12,8 @@ export const TICKET_STATUS_BADGE_VARIANT: Record<string, BadgeVariant> = {
 };
 
 export const DEFAULT_TICKET_STATUS_BADGE_VARIANT: BadgeVariant = "default";
+
+export const TICKET_MESSAGE_BUBBLE_CLASS: Record<TicketMessage["sender_role"], string> = {
+  student: "bg-ku-green-soft/40",
+  admin: "bg-background",
+};

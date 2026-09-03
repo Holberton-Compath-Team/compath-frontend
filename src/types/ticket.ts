@@ -24,3 +24,13 @@ export interface CreateTicketResponse {
   message: string;
   status: string;
 }
+
+/** Unverified: backend lokal işə düşməyib, Swagger (/api/docs) hazır olanda sahə adları təsdiqlənməlidir. */
+export interface TicketMessage {
+  id: number;
+  ticket_id: number;
+  sender: string;
+  sender_role: "student" | "admin";
+  message: string;
+  created_at: string;
+}

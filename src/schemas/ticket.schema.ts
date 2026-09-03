@@ -7,3 +7,9 @@ export const createTicketSchema = z.object({
 });
 
 export type CreateTicketFormValues = z.infer<typeof createTicketSchema>;
+
+export const sendMessageSchema = z.object({
+  message: z.string().min(1, "Mesaj tələb olunur"),
+});
+
+export type SendMessageFormValues = z.infer<typeof sendMessageSchema>;

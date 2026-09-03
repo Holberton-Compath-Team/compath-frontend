@@ -55,7 +55,7 @@ export default function AdminTicketsPage() {
       if (
         searchTerm &&
         !ticket.title.toLowerCase().includes(searchTerm) &&
-        !ticket.student.fullname.toLowerCase().includes(searchTerm)
+        !(ticket.student?.fullname.toLowerCase().includes(searchTerm) ?? false)
       ) {
         return false;
       }
