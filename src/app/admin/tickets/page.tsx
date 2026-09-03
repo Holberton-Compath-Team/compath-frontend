@@ -8,6 +8,7 @@ import { TicketFilterBar } from "@/components/tickets/ticket-filter-bar";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
+import { TICKET_PRIORITIES } from "@/constants/tickets";
 import { getServices } from "@/services/services";
 import { getAllTickets } from "@/services/tickets";
 
@@ -18,6 +19,7 @@ export default function AdminTicketsPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("");
   const [department, setDepartment] = useState("");
+  const [priority, setPriority] = useState("");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
 
@@ -42,6 +44,7 @@ export default function AdminTicketsPage() {
     setSearch("");
     setStatus("");
     setDepartment("");
+    setPriority("");
     setDateFrom("");
     setDateTo("");
   }
@@ -62,6 +65,7 @@ export default function AdminTicketsPage() {
 
       if (status && ticket.status !== status) return false;
       if (department && ticket.department !== department) return false;
+      if (priority && ticket.priority !== priority) return false;
 
       const createdAt = new Date(ticket.created_at);
 
@@ -75,7 +79,7 @@ export default function AdminTicketsPage() {
 
       return true;
     });
-  }, [tickets, search, status, department, dateFrom, dateTo]);
+  }, [tickets, search, status, department, priority, dateFrom, dateTo]);
 
   return (
     <Section>
@@ -91,6 +95,9 @@ export default function AdminTicketsPage() {
             departments={departments}
             department={department}
             onDepartmentChange={setDepartment}
+            priorities={TICKET_PRIORITIES}
+            priority={priority}
+            onPriorityChange={setPriority}
             dateFrom={dateFrom}
             onDateFromChange={setDateFrom}
             dateTo={dateTo}

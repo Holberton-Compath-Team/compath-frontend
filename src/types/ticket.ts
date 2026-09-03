@@ -4,6 +4,9 @@ export interface Ticket {
   description: string;
   department: string;
   status: string;
+  // Backend priority enum-u hələ Swagger-də sənədləşdirilməyib (FAZA G) — dəqiq
+  // dəyərlər gələndə union type-a çevriləcək. Optional, çünki köhnə ticket-lərdə yoxdur.
+  priority?: string;
   created_at: string;
 }
 
@@ -18,6 +21,7 @@ export interface CreateTicketPayload {
   title: string;
   description: string;
   department: string;
+  priority?: string;
 }
 
 export interface CreateTicketResponse {

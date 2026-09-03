@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input, inputVariants } from "@/components/ui/input";
+import { TICKET_PRIORITIES } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
 import { createTicketSchema, type CreateTicketFormValues } from "@/schemas/ticket.schema";
 import { getServices } from "@/services/services";
@@ -141,6 +142,44 @@ export function NewTicketForm() {
         {errors.department && (
           <p id="ticket-department-error" role="alert" className="text-small text-danger">
             {errors.department.message}
+          </p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-2">
+        <label htmlFor="ticket-priority" className="text-small font-medium text-text-primary">
+          Prioritet
+        </label>
+        <div className="relative">
+          <select
+            id="ticket-priority"
+            className={cn(
+              inputVariants({ hasError: Boolean(errors.priority) }),
+              "appearance-none pr-8",
+            )}
+            aria-invalid={Boolean(errors.priority)}
+            aria-describedby={errors.priority ? "ticket-priority-error" : undefined}
+            disabled={isDone || TICKET_PRIORITIES.length === 0}
+            defaultValue=""
+            {...register("priority")}
+          >
+            <option value="">
+              {TICKET_PRIORITIES.length === 0 ? "Tezliklə əlavə olunacaq" : "Prioritet seçin"}
+            </option>
+            {TICKET_PRIORITIES.map((priority) => (
+              <option key={priority} value={priority}>
+                {priority}
+              </option>
+            ))}
+          </select>
+          <ChevronDown
+            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
+            aria-hidden="true"
+          />
+        </div>
+        {errors.priority && (
+          <p id="ticket-priority-error" role="alert" className="text-small text-danger">
+            {errors.priority.message}
           </p>
         )}
       </div>
