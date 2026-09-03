@@ -46,6 +46,9 @@ export interface TicketFilterBarProps {
   departments?: string[];
   department?: string;
   onDepartmentChange?: (value: string) => void;
+  priorities?: string[];
+  priority?: string;
+  onPriorityChange?: (value: string) => void;
   dateFrom?: string;
   onDateFromChange?: (value: string) => void;
   dateTo?: string;
@@ -60,12 +63,16 @@ export function TicketFilterBar({
   departments,
   department,
   onDepartmentChange,
+  priorities,
+  priority,
+  onPriorityChange,
   dateFrom,
   onDateFromChange,
   dateTo,
   onDateToChange,
 }: TicketFilterBarProps) {
   const showDepartment = departments !== undefined && onDepartmentChange !== undefined;
+  const showPriority = priorities !== undefined && onPriorityChange !== undefined;
   const showDateRange = onDateFromChange !== undefined && onDateToChange !== undefined;
 
   return (
@@ -108,6 +115,22 @@ export function TicketFilterBar({
         >
           <option value="">Bütün şöbələr</option>
           {departments?.map((name) => (
+            <option key={name} value={name}>
+              {name}
+            </option>
+          ))}
+        </SelectField>
+      )}
+
+      {showPriority && (
+        <SelectField
+          id="ticket-priority-filter"
+          label="Prioritet"
+          value={priority ?? ""}
+          onChange={(value) => onPriorityChange?.(value)}
+        >
+          <option value="">Bütün prioritetlər</option>
+          {priorities?.map((name) => (
             <option key={name} value={name}>
               {name}
             </option>
