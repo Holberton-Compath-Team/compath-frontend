@@ -11,6 +11,7 @@ import {
   DEFAULT_TICKET_STATUS_BADGE_VARIANT,
   TICKET_PRIORITY_BADGE_VARIANT,
   TICKET_STATUS_BADGE_VARIANT,
+  TICKET_STATUS_LABEL,
 } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
 import { deleteTicket } from "@/services/tickets";
@@ -50,7 +51,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
       <div className="flex items-start justify-between gap-4">
         <CardTitle className="min-w-0 break-words">{ticket.title}</CardTitle>
         <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
-          <Badge variant={badgeVariant}>{ticket.status}</Badge>
+          <Badge variant={badgeVariant}>{TICKET_STATUS_LABEL[ticket.status] ?? ticket.status}</Badge>
           {ticket.priority && <Badge variant={priorityBadgeVariant}>{ticket.priority}</Badge>}
         </div>
       </div>
@@ -58,7 +59,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
         <p>{ticket.description}</p>
         <div className="flex flex-wrap gap-4 text-small text-text-secondary">
           <span>{ticket.department}</span>
-          <span>{formatDate(ticket.created_at)}</span>
+          <span>{formatDate(ticket.created_at ?? ticket.createdAt ?? "")}</span>
         </div>
       </CardContent>
       <CardActions className="justify-between">

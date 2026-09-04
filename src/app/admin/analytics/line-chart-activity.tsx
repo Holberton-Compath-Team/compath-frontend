@@ -39,8 +39,11 @@ function buildDailyActivity(tickets: AdminTicket[]): DailyActivity[] {
   const dayByKey = new Map(days.map((day) => [day.dateKey, day]));
 
   for (const ticket of tickets) {
-    const dateKey = new Date(ticket.created_at).toISOString().slice(0, 10);
-    const day = dayByKey.get(dateKey);
+    const raw = ticket.created_at ?? ticket.createdAt;
+    const date = raw ? new Date(raw) : null;
+    if (!date || Number.isNaN(date.getTime())) continue;
+
+    const day = dayByKey.get(date.toISOString().slice(0, 10));
     if (day) day.count += 1;
   }
 
