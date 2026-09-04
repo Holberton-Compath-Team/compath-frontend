@@ -11,6 +11,7 @@ import { Section } from "@/components/ui/section";
 import { TICKET_PRIORITIES } from "@/constants/tickets";
 import { getServices } from "@/services/services";
 import { getAllTickets } from "@/services/tickets";
+import { getAdminTicketAuthorName, getAdminTicketId } from "@/utils/admin-ticket";
 
 import { AdminTicketCard } from "./admin-ticket-card";
 import { TicketListSkeleton } from "./ticket-list-skeleton";
@@ -58,7 +59,7 @@ export default function AdminTicketsPage() {
       if (
         searchTerm &&
         !ticket.title.toLowerCase().includes(searchTerm) &&
-        !(ticket.student?.fullname.toLowerCase().includes(searchTerm) ?? false)
+        !getAdminTicketAuthorName(ticket).toLowerCase().includes(searchTerm)
       ) {
         return false;
       }
@@ -139,7 +140,7 @@ export default function AdminTicketsPage() {
         {filteredTickets.length > 0 && (
           <div className="flex flex-col gap-4">
             {filteredTickets.map((ticket) => (
-              <AdminTicketCard key={ticket.id} ticket={ticket} />
+              <AdminTicketCard key={getAdminTicketId(ticket)} ticket={ticket} />
             ))}
           </div>
         )}

@@ -17,6 +17,7 @@ import {
 import { ApiError } from "@/lib/api-client";
 import { updateTicketStatus } from "@/services/tickets";
 import type { AdminTicket } from "@/types/ticket";
+import { getAdminTicketAuthorName, getAdminTicketId } from "@/utils/admin-ticket";
 import { cn } from "@/utils/cn";
 import { formatDate } from "@/utils/format-date";
 
@@ -30,9 +31,10 @@ function resolveErrorMessage(error: unknown): string {
 
 export function AdminTicketCard({ ticket }: AdminTicketCardProps) {
   const queryClient = useQueryClient();
+  const ticketId = getAdminTicketId(ticket);
 
   const statusMutation = useMutation({
-    mutationFn: (status: string) => updateTicketStatus(ticket.id, status),
+    mutationFn: (status: string) => updateTicketStatus(ticketId, status),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-tickets"] }),
   });
 
@@ -58,13 +60,13 @@ export function AdminTicketCard({ ticket }: AdminTicketCardProps) {
           <span>{formatDate(ticket.created_at)}</span>
         </div>
         <div className="flex flex-wrap gap-4 text-small text-text-secondary">
-          <span>{ticket.student?.fullname ?? "Naməlum tələbə"}</span>
+          <span>{getAdminTicketAuthorName(ticket)}</span>
           <span>{ticket.student?.email ?? "—"}</span>
         </div>
       </CardContent>
       <CardActions className="justify-between">
         <Link
-          href={`/admin/tickets/${ticket.id}`}
+          href={`/admin/tickets/${ticketId}`}
           className="inline-flex items-center gap-1 text-small font-medium text-ku-green hover:text-ku-green-dark"
         >
           Detallara bax

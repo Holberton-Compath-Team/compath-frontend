@@ -10,8 +10,16 @@ export interface Ticket {
   created_at: string;
 }
 
-export interface AdminTicket extends Ticket {
-  student: {
+/**
+ * GET /api/tickets/all format keçidindədir: bəzi ticket-lər köhnə (`id` + `student`
+ * obyekti), bəziləri yeni (`ticketId` + `authorName`) formatda gəlir — hər ikisi
+ * optional saxlanır, oxuma zamanı @/utils/admin-ticket köməkçiləri ilə birləşdirilir.
+ */
+export interface AdminTicket extends Omit<Ticket, "id"> {
+  id?: number;
+  ticketId?: number;
+  authorName?: string;
+  student?: {
     fullname: string;
     email: string;
   };

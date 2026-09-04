@@ -17,6 +17,7 @@ import {
   TICKET_STATUS_BADGE_VARIANT,
 } from "@/constants/tickets";
 import { getAllTickets } from "@/services/tickets";
+import { getAdminTicketAuthorName, getAdminTicketId } from "@/utils/admin-ticket";
 import { formatDate } from "@/utils/format-date";
 
 export default function AdminTicketDetailPage() {
@@ -33,7 +34,7 @@ export default function AdminTicketDetailPage() {
     queryFn: getAllTickets,
   });
 
-  const ticket = tickets?.find((item) => item.id === ticketId);
+  const ticket = tickets?.find((item) => getAdminTicketId(item) === ticketId);
 
   return (
     <Section>
@@ -81,7 +82,7 @@ export default function AdminTicketDetailPage() {
                   <span>{formatDate(ticket.created_at)}</span>
                 </div>
                 <div className="flex flex-wrap gap-4 text-small text-text-secondary">
-                  <span>{ticket.student?.fullname ?? "Naməlum tələbə"}</span>
+                  <span>{getAdminTicketAuthorName(ticket)}</span>
                   <span>{ticket.student?.email ?? "—"}</span>
                 </div>
               </CardContent>
@@ -89,8 +90,8 @@ export default function AdminTicketDetailPage() {
 
             <div className="flex flex-col gap-4 rounded-card bg-surface p-6 shadow-sm">
               <h2 className="text-h3 text-text-primary">Mesajlar</h2>
-              <TicketMessageList ticketId={ticket.id} />
-              <TicketMessageForm ticketId={ticket.id} />
+              <TicketMessageList ticketId={getAdminTicketId(ticket)} />
+              <TicketMessageForm ticketId={getAdminTicketId(ticket)} />
             </div>
           </>
         )}
