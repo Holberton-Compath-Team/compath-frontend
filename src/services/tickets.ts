@@ -11,6 +11,7 @@ export async function getTickets(): Promise<Ticket[]> {
   return apiClient.get<Ticket[]>("/tickets");
 }
 
+
 export async function getAllTickets(): Promise<AdminTicket[]> {
   return apiClient.get<AdminTicket[]>("/tickets/all");
 }
