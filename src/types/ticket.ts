@@ -22,6 +22,7 @@ export interface CreateTicketPayload {
   description: string;
   department: string;
   priority?: string;
+  attachedFiles?: string[];
 }
 
 export interface CreateTicketResponse {
