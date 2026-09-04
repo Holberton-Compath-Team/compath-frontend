@@ -67,7 +67,7 @@ export default function AdminTicketsPage() {
       if (department && ticket.department !== department) return false;
       if (priority && ticket.priority !== priority) return false;
 
-      const createdAt = new Date(ticket.created_at);
+      const createdAt = new Date(ticket.created_at ?? ticket.createdAt ?? "");
 
       if (dateFrom && createdAt < new Date(dateFrom)) return false;
 

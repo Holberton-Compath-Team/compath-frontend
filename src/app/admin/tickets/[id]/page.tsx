@@ -15,6 +15,7 @@ import { Section } from "@/components/ui/section";
 import {
   DEFAULT_TICKET_STATUS_BADGE_VARIANT,
   TICKET_STATUS_BADGE_VARIANT,
+  TICKET_STATUS_LABEL,
 } from "@/constants/tickets";
 import { getAllTickets } from "@/services/tickets";
 import { formatDate } from "@/utils/format-date";
@@ -71,14 +72,14 @@ export default function AdminTicketDetailPage() {
                   variant={TICKET_STATUS_BADGE_VARIANT[ticket.status] ?? DEFAULT_TICKET_STATUS_BADGE_VARIANT}
                   className="shrink-0"
                 >
-                  {ticket.status}
+                  {TICKET_STATUS_LABEL[ticket.status] ?? ticket.status}
                 </Badge>
               </div>
               <CardContent className="flex flex-col gap-2">
                 <p>{ticket.description}</p>
                 <div className="flex flex-wrap gap-4 text-small text-text-secondary">
                   <span>{ticket.department}</span>
-                  <span>{formatDate(ticket.created_at)}</span>
+                  <span>{formatDate(ticket.created_at ?? ticket.createdAt ?? "")}</span>
                 </div>
                 <div className="flex flex-wrap gap-4 text-small text-text-secondary">
                   <span>{ticket.student?.fullname ?? "Naməlum tələbə"}</span>

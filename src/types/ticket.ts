@@ -7,7 +7,10 @@ export interface Ticket {
   // Backend priority enum-u hələ Swagger-də sənədləşdirilməyib (FAZA G) — dəqiq
   // dəyərlər gələndə union type-a çevriləcək. Optional, çünki köhnə ticket-lərdə yoxdur.
   priority?: string;
-  created_at: string;
+  // Backend hələ iki formatı qarışıq qaytarır (köhnə ticket-lər: created_at,
+  // yeni: createdAt) — sabitləşənə qədər hər ikisi optional saxlanılır.
+  created_at?: string;
+  createdAt?: string;
 }
 
 export interface AdminTicket extends Ticket {

@@ -9,9 +9,27 @@ export const TICKET_STATUS_BADGE_VARIANT: Record<string, BadgeVariant> = {
   "Gözləmədə": "warning",
   "Baxılır": "accent",
   "Həll olundu": "success",
+  // Backend bəzən ingiliscə status dəyərləri qaytarır (bax CLAUDE.md — backendə
+  // bildirilib, sabitləşənə qədər ehtimal olunan variantlar da əlavə olunur).
+  pending: "warning",
+  in_progress: "accent",
+  inProgress: "accent",
+  resolved: "success",
 };
 
 export const DEFAULT_TICKET_STATUS_BADGE_VARIANT: BadgeVariant = "default";
+
+// Ekranda göstərilən mətn — backend ingiliscə/naməlum dəyər qaytarsa belə
+// istifadəçi həmişə Azərbaycanca status görür. AZ dəyərlər özlərinə map olunur.
+export const TICKET_STATUS_LABEL: Record<string, string> = {
+  "Gözləmədə": "Gözləmədə",
+  "Baxılır": "Baxılır",
+  "Həll olundu": "Həll olundu",
+  pending: "Gözləmədə",
+  in_progress: "Baxılır",
+  inProgress: "Baxılır",
+  resolved: "Həll olundu",
+};
 
 export const TICKET_MESSAGE_BUBBLE_CLASS: Record<TicketMessage["sender_role"], string> = {
   student: "bg-ku-green-soft/40",
