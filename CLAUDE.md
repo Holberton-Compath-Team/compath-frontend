@@ -26,6 +26,7 @@ Yalnız aşağıdakılar bu sprintdə edilir:
 
 ---
 
+
 ## 2. Texnologiya stacki (sabit, dəyişdirilmir)
 
 - Next.js (App Router) + TypeScript (strict mode)
