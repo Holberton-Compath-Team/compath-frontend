@@ -19,6 +19,7 @@ import {
 } from "@/constants/tickets";
 import { getTickets } from "@/services/tickets";
 import { formatDate } from "@/utils/format-date";
+import { getTicketId } from "@/utils/ticket";
 
 export default function TicketDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -34,21 +35,7 @@ export default function TicketDetailPage() {
     queryFn: getTickets,
   });
 
-  const ticket = tickets?.find((item) => item.id === ticketId);
-
-  // TEMP DEBUG — id/ticketId uyğunsuzluğunu tapmaq üçün, tapılandan sonra silinəcək.
-  if (tickets) {
-    console.log("[DEBUG ticket-detail] route param:", id, "-> Number():", ticketId);
-    console.log(
-      "[DEBUG ticket-detail] tickets:",
-      tickets.map((item) => ({
-        id: item.id,
-        idType: typeof item.id,
-        ticketId: item.ticketId,
-        ticketIdType: typeof item.ticketId,
-      })),
-    );
-  }
+  const ticket = tickets?.find((item) => getTicketId(item) === ticketId);
 
   return (
     <Section>
@@ -100,8 +87,8 @@ export default function TicketDetailPage() {
 
             <div className="flex flex-col gap-4 rounded-card bg-surface p-6 shadow-sm">
               <h2 className="text-h3 text-text-primary">Mesajlar</h2>
-              <TicketMessageList ticketId={ticket.id} />
-              <TicketMessageForm ticketId={ticket.id} />
+              <TicketMessageList ticketId={getTicketId(ticket)} />
+              <TicketMessageForm ticketId={getTicketId(ticket)} />
             </div>
           </>
         )}

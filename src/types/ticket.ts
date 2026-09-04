@@ -1,5 +1,9 @@
 export interface Ticket {
-  id: number;
+  // GET /tickets format keçidindədir: köhnə ticket-lər `id`, yeni (Firestore)
+  // ticket-lər `ticketId` qaytarır — sabitləşənə qədər hər ikisi optional,
+  // oxuma zamanı @/utils/ticket->getTicketId ilə birləşdirilir.
+  id?: number;
+  ticketId?: number;
   title: string;
   description: string;
   department: string;
@@ -11,9 +15,6 @@ export interface Ticket {
   // yeni: createdAt) — sabitləşənə qədər hər ikisi optional saxlanılır.
   created_at?: string;
   createdAt?: string;
-  // Unverified: yeni (Firestore) ticket-lərdə id-dən əlavə ticketId sahəsi də
-  // müşahidə olunub, forması hələ təsdiqlənməyib — debug üçün optional əlavə edilib.
-  ticketId?: string | number;
 }
 
 /**

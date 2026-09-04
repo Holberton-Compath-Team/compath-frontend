@@ -10,6 +10,7 @@ import { Button, buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { getTickets } from "@/services/tickets";
+import { getTicketId } from "@/utils/ticket";
 
 import { TicketCard } from "./ticket-card";
 import { TicketListSkeleton } from "./ticket-list-skeleton";
@@ -96,7 +97,7 @@ export default function DashboardPage() {
         {filteredTickets.length > 0 && (
           <div className="flex flex-col gap-4">
             {filteredTickets.map((ticket) => (
-              <TicketCard key={ticket.id} ticket={ticket} />
+              <TicketCard key={getTicketId(ticket)} ticket={ticket} />
             ))}
           </div>
         )}

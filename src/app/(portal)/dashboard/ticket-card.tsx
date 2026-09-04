@@ -17,6 +17,7 @@ import { ApiError } from "@/lib/api-client";
 import { deleteTicket } from "@/services/tickets";
 import type { Ticket } from "@/types/ticket";
 import { formatDate } from "@/utils/format-date";
+import { getTicketId } from "@/utils/ticket";
 
 interface TicketCardProps {
   ticket: Ticket;
@@ -28,9 +29,10 @@ function resolveErrorMessage(error: unknown): string {
 
 export function TicketCard({ ticket }: TicketCardProps) {
   const queryClient = useQueryClient();
+  const ticketId = getTicketId(ticket);
 
   const deleteMutation = useMutation({
-    mutationFn: () => deleteTicket(ticket.id),
+    mutationFn: () => deleteTicket(ticketId),
     onSuccess: () => queryClient.invalidateQueries({ queryKey: ["tickets"] }),
   });
 
@@ -64,7 +66,7 @@ export function TicketCard({ ticket }: TicketCardProps) {
       </CardContent>
       <CardActions className="justify-between">
         <Link
-          href={`/tickets/${ticket.id}`}
+          href={`/tickets/${ticketId}`}
           className="inline-flex items-center gap-1 text-small font-medium text-ku-green hover:text-ku-green-dark"
         >
           Detallara bax

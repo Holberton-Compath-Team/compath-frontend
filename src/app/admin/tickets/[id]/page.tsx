@@ -37,20 +37,6 @@ export default function AdminTicketDetailPage() {
 
   const ticket = tickets?.find((item) => getAdminTicketId(item) === ticketId);
 
-  // TEMP DEBUG — id/ticketId uyğunsuzluğunu tapmaq üçün, tapılandan sonra silinəcək.
-  if (tickets) {
-    console.log("[DEBUG admin-ticket-detail] route param:", id, "-> Number():", ticketId);
-    console.log(
-      "[DEBUG admin-ticket-detail] tickets:",
-      tickets.map((item) => ({
-        id: item.id,
-        idType: typeof item.id,
-        ticketId: item.ticketId,
-        ticketIdType: typeof item.ticketId,
-      })),
-    );
-  }
-
   return (
     <Section>
       <Container className="flex flex-col gap-6">
