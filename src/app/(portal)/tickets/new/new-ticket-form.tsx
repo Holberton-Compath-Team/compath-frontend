@@ -5,11 +5,13 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { ChevronDown } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input, inputVariants } from "@/components/ui/input";
+import { TicketFaqAccordion } from "@/components/tickets/ticket-faq-accordion";
 import { TicketFileUpload, type TicketFileUploadState } from "@/components/tickets/ticket-file-upload";
+import { ACADEMIC_SERVICE_FAQ } from "@/constants/faq";
 import { TICKET_PRIORITIES } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
 import { createTicketSchema, type CreateTicketFormValues } from "@/schemas/ticket.schema";
@@ -35,10 +37,23 @@ export function NewTicketForm() {
     register,
     handleSubmit,
     setValue,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<CreateTicketFormValues>({
     resolver: zodResolver(createTicketSchema),
   });
+
+  const department = useWatch({ control, name: "department" });
+  const isAcademicSelected = department?.trim().toLowerCase() === "akademik";
+  const [faqAcknowledged, setFaqAcknowledged] = useState(false);
+  const [acknowledgedForDepartment, setAcknowledgedForDepartment] = useState(department);
+
+  if (department !== acknowledgedForDepartment) {
+    setAcknowledgedForDepartment(department);
+    setFaqAcknowledged(false);
+  }
+
+  const showFaq = isAcademicSelected && !faqAcknowledged;
 
   const {
     data: services,
@@ -94,14 +109,16 @@ export function NewTicketForm() {
         </p>
       )}
 
-      <Input
-        id="ticket-title"
-        label="Başlıq"
-        type="text"
-        error={errors.title?.message}
-        disabled={isDone}
-        {...register("title")}
-      />
+      {!showFaq && (
+        <Input
+          id="ticket-title"
+          label="Başlıq"
+          type="text"
+          error={errors.title?.message}
+          disabled={isDone}
+          {...register("title")}
+        />
+      )}
 
       <div className="flex flex-col gap-2">
         <label htmlFor="ticket-department" className="text-small font-medium text-text-primary">
@@ -154,74 +171,85 @@ export function NewTicketForm() {
         )}
       </div>
 
-      <div className="flex flex-col gap-2">
-        <label htmlFor="ticket-priority" className="text-small font-medium text-text-primary">
-          Prioritet
-        </label>
-        <div className="relative">
-          <select
-            id="ticket-priority"
-            className={cn(
-              inputVariants({ hasError: Boolean(errors.priority) }),
-              "appearance-none pr-8",
-            )}
-            aria-invalid={Boolean(errors.priority)}
-            aria-describedby={errors.priority ? "ticket-priority-error" : undefined}
-            disabled={isDone || TICKET_PRIORITIES.length === 0}
-            defaultValue=""
-            {...register("priority")}
-          >
-            <option value="">
-              {TICKET_PRIORITIES.length === 0 ? "Tezliklə əlavə olunacaq" : "Prioritet seçin"}
-            </option>
-            {TICKET_PRIORITIES.map((priority) => (
-              <option key={priority} value={priority}>
-                {priority}
-              </option>
-            ))}
-          </select>
-          <ChevronDown
-            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
-            aria-hidden="true"
-          />
-        </div>
-        {errors.priority && (
-          <p id="ticket-priority-error" role="alert" className="text-small text-danger">
-            {errors.priority.message}
-          </p>
-        )}
-      </div>
-
-      <div className="flex flex-col gap-2">
-        <label htmlFor="ticket-description" className="text-small font-medium text-text-primary">
-          Açıqlama
-        </label>
-        <textarea
-          id="ticket-description"
-          rows={5}
-          className={inputVariants({ hasError: Boolean(errors.description) })}
-          aria-invalid={Boolean(errors.description)}
-          aria-describedby={errors.description ? "ticket-description-error" : undefined}
-          disabled={isDone}
-          {...register("description")}
+      {showFaq && (
+        <TicketFaqAccordion
+          items={ACADEMIC_SERVICE_FAQ}
+          onContinue={() => setFaqAcknowledged(true)}
         />
-        {errors.description && (
-          <p id="ticket-description-error" role="alert" className="text-small text-danger">
-            {errors.description.message}
-          </p>
-        )}
-      </div>
+      )}
 
-      <TicketFileUpload onChange={setAttachment} disabled={isDone} />
+      {!showFaq && (
+        <>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="ticket-priority" className="text-small font-medium text-text-primary">
+              Prioritet
+            </label>
+            <div className="relative">
+              <select
+                id="ticket-priority"
+                className={cn(
+                  inputVariants({ hasError: Boolean(errors.priority) }),
+                  "appearance-none pr-8",
+                )}
+                aria-invalid={Boolean(errors.priority)}
+                aria-describedby={errors.priority ? "ticket-priority-error" : undefined}
+                disabled={isDone || TICKET_PRIORITIES.length === 0}
+                defaultValue=""
+                {...register("priority")}
+              >
+                <option value="">
+                  {TICKET_PRIORITIES.length === 0 ? "Tezliklə əlavə olunacaq" : "Prioritet seçin"}
+                </option>
+                {TICKET_PRIORITIES.map((priority) => (
+                  <option key={priority} value={priority}>
+                    {priority}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown
+                className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
+                aria-hidden="true"
+              />
+            </div>
+            {errors.priority && (
+              <p id="ticket-priority-error" role="alert" className="text-small text-danger">
+                {errors.priority.message}
+              </p>
+            )}
+          </div>
 
-      <Button
-        type="submit"
-        isLoading={isSubmitting}
-        disabled={isDone || attachment.uploading}
-        className="w-full"
-      >
-        {isSubmitting ? "Göndərilir..." : "Göndər"}
-      </Button>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="ticket-description" className="text-small font-medium text-text-primary">
+              Açıqlama
+            </label>
+            <textarea
+              id="ticket-description"
+              rows={5}
+              className={inputVariants({ hasError: Boolean(errors.description) })}
+              aria-invalid={Boolean(errors.description)}
+              aria-describedby={errors.description ? "ticket-description-error" : undefined}
+              disabled={isDone}
+              {...register("description")}
+            />
+            {errors.description && (
+              <p id="ticket-description-error" role="alert" className="text-small text-danger">
+                {errors.description.message}
+              </p>
+            )}
+          </div>
+
+          <TicketFileUpload onChange={setAttachment} disabled={isDone} />
+
+          <Button
+            type="submit"
+            isLoading={isSubmitting}
+            disabled={isDone || attachment.uploading}
+            className="w-full"
+          >
+            {isSubmitting ? "Göndərilir..." : "Göndər"}
+          </Button>
+        </>
+      )}
     </form>
   );
 }
