@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input, inputVariants } from "@/components/ui/input";
+import { TicketFileUpload, type TicketFileUploadState } from "@/components/tickets/ticket-file-upload";
 import { TICKET_PRIORITIES } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
 import { createTicketSchema, type CreateTicketFormValues } from "@/schemas/ticket.schema";
@@ -25,6 +26,10 @@ export function NewTicketForm() {
   const departmentParam = searchParams.get("department");
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
+  const [attachment, setAttachment] = useState<TicketFileUploadState>({
+    url: null,
+    uploading: false,
+  });
 
   const {
     register,
@@ -55,7 +60,10 @@ export function NewTicketForm() {
     setSubmitMessage(null);
 
     try {
-      const response = await createTicket(values);
+      const response = await createTicket({
+        ...values,
+        attachedFiles: attachment.url ? [attachment.url] : undefined,
+      });
       setSubmitMessage(response.message);
       await queryClient.invalidateQueries({ queryKey: ["tickets"] });
       setTimeout(() => router.push("/dashboard"), REDIRECT_DELAY_MS);
@@ -204,7 +212,14 @@ export function NewTicketForm() {
         )}
       </div>
 
-      <Button type="submit" isLoading={isSubmitting} disabled={isDone} className="w-full">
+      <TicketFileUpload onChange={setAttachment} disabled={isDone} />
+
+      <Button
+        type="submit"
+        isLoading={isSubmitting}
+        disabled={isDone || attachment.uploading}
+        className="w-full"
+      >
         {isSubmitting ? "Göndərilir..." : "Göndər"}
       </Button>
     </form>
