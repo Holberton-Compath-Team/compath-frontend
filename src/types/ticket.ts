@@ -11,6 +11,9 @@ export interface Ticket {
   // yeni: createdAt) — sabitləşənə qədər hər ikisi optional saxlanılır.
   created_at?: string;
   createdAt?: string;
+  // Unverified: yeni (Firestore) ticket-lərdə id-dən əlavə ticketId sahəsi də
+  // müşahidə olunub, forması hələ təsdiqlənməyib — debug üçün optional əlavə edilib.
+  ticketId?: string | number;
 }
 
 /**

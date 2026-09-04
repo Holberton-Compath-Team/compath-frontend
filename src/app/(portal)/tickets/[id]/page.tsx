@@ -36,6 +36,20 @@ export default function TicketDetailPage() {
 
   const ticket = tickets?.find((item) => item.id === ticketId);
 
+  // TEMP DEBUG — id/ticketId uyğunsuzluğunu tapmaq üçün, tapılandan sonra silinəcək.
+  if (tickets) {
+    console.log("[DEBUG ticket-detail] route param:", id, "-> Number():", ticketId);
+    console.log(
+      "[DEBUG ticket-detail] tickets:",
+      tickets.map((item) => ({
+        id: item.id,
+        idType: typeof item.id,
+        ticketId: item.ticketId,
+        ticketIdType: typeof item.ticketId,
+      })),
+    );
+  }
+
   return (
     <Section>
       <Container className="flex flex-col gap-6">
