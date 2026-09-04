@@ -23,6 +23,15 @@ export function formatDate(iso: string): string {
   return `${day} ${month} ${year}`;
 }
 
+export function formatDayMonth(iso: string): string {
+  const date = new Date(iso);
+
+  const day = date.getUTCDate();
+  const month = MONTH_LABELS[date.getUTCMonth()];
+
+  return `${day} ${month}`;
+}
+
 export function formatDateTime(iso: string): string {
   const date = new Date(iso);
 

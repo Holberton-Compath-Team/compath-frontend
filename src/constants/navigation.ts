@@ -27,4 +27,5 @@ export const PORTAL_NAV_LINKS: PortalNavLink[] = [
 export const ADMIN_NAV_LINKS: NavLink[] = [
   { href: "/admin/tickets", label: "Müraciətlər" },
   { href: "/admin/services", label: "Xidmətlər" },
+  { href: "/admin/analytics", label: "Analitika" },
 ];
