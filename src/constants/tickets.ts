@@ -43,3 +43,17 @@ export const TICKET_PRIORITIES: string[] = [];
 export const TICKET_PRIORITY_BADGE_VARIANT: Record<string, BadgeVariant> = {};
 
 export const DEFAULT_TICKET_PRIORITY_BADGE_VARIANT: BadgeVariant = "default";
+
+// Xidmət Kataloqundan gələn dəqiq adlar — FAQ Accordion və dinamik sahələr
+// bu adlarla (trim, case-sensitive) müqayisə olunur.
+export const ACADEMIC_SERVICE_NAME = "Akademik";
+export const ADMINISTRATIVE_FINANCE_SERVICE_NAME = "İnzibati-Maliyyə";
+
+export const DOCUMENT_TYPES = [
+  "Tələbə arayışı",
+  "Transkript",
+  "Hərbi komissarlıq üçün arayış",
+  "Təqaüd barədə çıxarış",
+] as const;
+
+export const EDUCATION_FORMS = ["Ödənişli", "Dövlət sifarişli"] as const;

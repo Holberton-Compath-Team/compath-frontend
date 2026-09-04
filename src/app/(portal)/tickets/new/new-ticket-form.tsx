@@ -9,14 +9,20 @@ import { useForm, useWatch } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input, inputVariants } from "@/components/ui/input";
+import { TicketAdministrativeFinanceFields } from "@/components/tickets/ticket-administrative-finance-fields";
 import { TicketFaqAccordion } from "@/components/tickets/ticket-faq-accordion";
 import { TicketFileUpload, type TicketFileUploadState } from "@/components/tickets/ticket-file-upload";
 import { ACADEMIC_SERVICE_FAQ } from "@/constants/faq";
-import { TICKET_PRIORITIES } from "@/constants/tickets";
+import {
+  ACADEMIC_SERVICE_NAME,
+  ADMINISTRATIVE_FINANCE_SERVICE_NAME,
+  TICKET_PRIORITIES,
+} from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
 import { createTicketSchema, type CreateTicketFormValues } from "@/schemas/ticket.schema";
 import { getServices } from "@/services/services";
 import { createTicket } from "@/services/tickets";
+import type { CreateTicketPayload } from "@/types/ticket";
 import { cn } from "@/utils/cn";
 
 const REDIRECT_DELAY_MS = 1200;
@@ -44,7 +50,9 @@ export function NewTicketForm() {
   });
 
   const department = useWatch({ control, name: "department" });
-  const isAcademicSelected = department?.trim().toLowerCase() === "akademik";
+  const isAcademicSelected = department?.trim() === ACADEMIC_SERVICE_NAME;
+  const isAdministrativeFinanceSelected =
+    department?.trim() === ADMINISTRATIVE_FINANCE_SERVICE_NAME;
   const [faqAcknowledged, setFaqAcknowledged] = useState(false);
   const [acknowledgedForDepartment, setAcknowledgedForDepartment] = useState(department);
 
@@ -74,11 +82,21 @@ export function NewTicketForm() {
     setSubmitError(null);
     setSubmitMessage(null);
 
+    const description =
+      values.department === ADMINISTRATIVE_FINANCE_SERVICE_NAME
+        ? `${values.description}\n\n---\nSənəd növü: ${values.documentType}\nTəhsil forması: ${values.educationForm}\nFİN: ${values.finCode}`
+        : values.description;
+
+    const payload: CreateTicketPayload = {
+      title: values.title,
+      department: values.department,
+      priority: values.priority,
+      description,
+      attachedFiles: attachment.url ? [attachment.url] : undefined,
+    };
+
     try {
-      const response = await createTicket({
-        ...values,
-        attachedFiles: attachment.url ? [attachment.url] : undefined,
-      });
+      const response = await createTicket(payload);
       setSubmitMessage(response.message);
       await queryClient.invalidateQueries({ queryKey: ["tickets"] });
       setTimeout(() => router.push("/dashboard"), REDIRECT_DELAY_MS);
@@ -110,66 +128,68 @@ export function NewTicketForm() {
       )}
 
       {!showFaq && (
-        <Input
-          id="ticket-title"
-          label="Başlıq"
-          type="text"
-          error={errors.title?.message}
-          disabled={isDone}
-          {...register("title")}
-        />
-      )}
-
-      <div className="flex flex-col gap-2">
-        <label htmlFor="ticket-department" className="text-small font-medium text-text-primary">
-          Şöbə
-        </label>
-        <div className="relative">
-          <select
-            id="ticket-department"
-            className={cn(
-              inputVariants({ hasError: Boolean(errors.department) }),
-              "appearance-none pr-8",
-            )}
-            aria-invalid={Boolean(errors.department)}
-            aria-describedby={errors.department ? "ticket-department-error" : undefined}
-            disabled={isDepartmentDisabled}
-            defaultValue=""
-            {...register("department")}
-          >
-            {isServicesPending && <option value="">Yüklənir...</option>}
-
-            {!isServicesPending && !isServicesError && services?.length === 0 && (
-              <option value="">Hazırda xidmət mövcud deyil</option>
-            )}
-
-            {!isServicesPending && !isServicesError && services && services.length > 0 && (
-              <>
-                <option value="" disabled>
-                  Şöbə seçin
-                </option>
-                {services.map((service) => (
-                  <option key={service.id} value={service.name}>
-                    {service.name}
-                  </option>
-                ))}
-              </>
-            )}
-          </select>
-          <ChevronDown
-            className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
-            aria-hidden="true"
+        <>
+          <Input
+            id="ticket-title"
+            label="Başlıq"
+            type="text"
+            error={errors.title?.message}
+            disabled={isDone}
+            {...register("title")}
           />
-        </div>
-        {isServicesError && (
-          <p className="text-small text-danger">Xidmətlər yüklənə bilmədi.</p>
-        )}
-        {errors.department && (
-          <p id="ticket-department-error" role="alert" className="text-small text-danger">
-            {errors.department.message}
-          </p>
-        )}
-      </div>
+
+          <div className="flex flex-col gap-2">
+            <label htmlFor="ticket-department" className="text-small font-medium text-text-primary">
+              Şöbə
+            </label>
+            <div className="relative">
+              <select
+                id="ticket-department"
+                className={cn(
+                  inputVariants({ hasError: Boolean(errors.department) }),
+                  "appearance-none pr-8",
+                )}
+                aria-invalid={Boolean(errors.department)}
+                aria-describedby={errors.department ? "ticket-department-error" : undefined}
+                disabled={isDepartmentDisabled}
+                defaultValue=""
+                {...register("department")}
+              >
+                {isServicesPending && <option value="">Yüklənir...</option>}
+
+                {!isServicesPending && !isServicesError && services?.length === 0 && (
+                  <option value="">Hazırda xidmət mövcud deyil</option>
+                )}
+
+                {!isServicesPending && !isServicesError && services && services.length > 0 && (
+                  <>
+                    <option value="" disabled>
+                      Şöbə seçin
+                    </option>
+                    {services.map((service) => (
+                      <option key={service.id} value={service.name}>
+                        {service.name}
+                      </option>
+                    ))}
+                  </>
+                )}
+              </select>
+              <ChevronDown
+                className="pointer-events-none absolute right-3 top-1/2 size-4 -translate-y-1/2 text-text-secondary"
+                aria-hidden="true"
+              />
+            </div>
+            {isServicesError && (
+              <p className="text-small text-danger">Xidmətlər yüklənə bilmədi.</p>
+            )}
+            {errors.department && (
+              <p id="ticket-department-error" role="alert" className="text-small text-danger">
+                {errors.department.message}
+              </p>
+            )}
+          </div>
+        </>
+      )}
 
       {showFaq && (
         <TicketFaqAccordion
@@ -237,6 +257,10 @@ export function NewTicketForm() {
               </p>
             )}
           </div>
+
+          {isAdministrativeFinanceSelected && (
+            <TicketAdministrativeFinanceFields register={register} errors={errors} disabled={isDone} />
+          )}
 
           <TicketFileUpload onChange={setAttachment} disabled={isDone} />
 
