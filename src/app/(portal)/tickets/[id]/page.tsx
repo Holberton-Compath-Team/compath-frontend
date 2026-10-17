@@ -23,7 +23,6 @@ import { getTicketId } from "@/utils/ticket";
 
 export default function TicketDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const ticketId = Number(id);
 
   const {
     data: tickets,
@@ -35,7 +34,7 @@ export default function TicketDetailPage() {
     queryFn: getTickets,
   });
 
-  const ticket = tickets?.find((item) => getTicketId(item) === ticketId);
+  const ticket = tickets?.find((item) => getTicketId(item) === id);
 
   return (
     <Section>

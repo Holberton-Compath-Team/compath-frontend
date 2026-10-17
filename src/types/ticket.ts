@@ -1,9 +1,10 @@
 export interface Ticket {
   // GET /tickets format keçidindədir: köhnə ticket-lər `id`, yeni (Firestore)
   // ticket-lər `ticketId` qaytarır — sabitləşənə qədər hər ikisi optional,
-  // oxuma zamanı @/utils/ticket->getTicketId ilə birləşdirilir.
-  id?: number;
-  ticketId?: number;
+  // oxuma zamanı @/utils/ticket->getTicketId ilə birləşdirilir. String, çünki
+  // Firestore id-ləri ədəd olmaya bilər (bax İŞ 2 — id uyğunsuzluğu düzəlişi).
+  id?: string;
+  ticketId?: string;
   title: string;
   description: string;
   department: string;
@@ -23,8 +24,8 @@ export interface Ticket {
  * optional saxlanır, oxuma zamanı @/utils/admin-ticket köməkçiləri ilə birləşdirilir.
  */
 export interface AdminTicket extends Omit<Ticket, "id"> {
-  id?: number;
-  ticketId?: number;
+  id?: string;
+  ticketId?: string;
   authorName?: string;
   student?: {
     fullname: string;
@@ -45,10 +46,15 @@ export interface CreateTicketResponse {
   status: string;
 }
 
-/** Unverified: backend lokal işə düşməyib, Swagger (/api/docs) hazır olanda sahə adları təsdiqlənməlidir. */
+/**
+ * Unverified: backend lokal işə düşməyib, Swagger (/api/docs) hazır olanda sahə
+ * adları təsdiqlənməlidir. `ticket_id`/`ticketId` ikisi də optional saxlanılır —
+ * Ticket/AdminTicket-dəki eyni köhnə/yeni format keçidi burada da gözlənilir.
+ */
 export interface TicketMessage {
-  id: number;
-  ticket_id: number;
+  id: string;
+  ticket_id?: string;
+  ticketId?: string;
   sender: string;
   sender_role: "student" | "admin";
   message: string;

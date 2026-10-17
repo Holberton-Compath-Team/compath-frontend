@@ -15,7 +15,7 @@ function resolveErrorMessage(error: unknown): string {
 }
 
 interface TicketMessageFormProps {
-  ticketId: number;
+  ticketId: string;
 }
 
 export function TicketMessageForm({ ticketId }: TicketMessageFormProps) {

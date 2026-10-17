@@ -24,7 +24,7 @@ function TicketMessageListSkeleton() {
 }
 
 interface TicketMessageListProps {
-  ticketId: number;
+  ticketId: string;
 }
 
 export function TicketMessageList({ ticketId }: TicketMessageListProps) {

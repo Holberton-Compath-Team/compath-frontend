@@ -23,7 +23,6 @@ import { formatDate } from "@/utils/format-date";
 
 export default function AdminTicketDetailPage() {
   const { id } = useParams<{ id: string }>();
-  const ticketId = Number(id);
 
   const {
     data: tickets,
@@ -35,7 +34,7 @@ export default function AdminTicketDetailPage() {
     queryFn: getAllTickets,
   });
 
-  const ticket = tickets?.find((item) => getAdminTicketId(item) === ticketId);
+  const ticket = tickets?.find((item) => getAdminTicketId(item) === id);
 
   return (
     <Section>

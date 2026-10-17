@@ -22,18 +22,18 @@ export async function createTicket(
   return apiClient.post<CreateTicketResponse>("/tickets", payload);
 }
 
-export async function updateTicketStatus(id: number, status: string): Promise<unknown> {
-  return apiClient.put<unknown>(`/tickets/${id}`, { status });
+export async function updateTicketStatus(id: string, status: string): Promise<unknown> {
+  return apiClient.put<unknown>(`/tickets/${encodeURIComponent(id)}`, { status });
 }
 
-export async function deleteTicket(id: number): Promise<unknown> {
-  return apiClient.delete<unknown>(`/tickets/${id}`);
+export async function deleteTicket(id: string): Promise<unknown> {
+  return apiClient.delete<unknown>(`/tickets/${encodeURIComponent(id)}`);
 }
 
-export async function getTicketMessages(ticketId: number): Promise<TicketMessage[]> {
-  return apiClient.get<TicketMessage[]>(`/tickets/${ticketId}/messages`);
+export async function getTicketMessages(ticketId: string): Promise<TicketMessage[]> {
+  return apiClient.get<TicketMessage[]>(`/tickets/${encodeURIComponent(ticketId)}/messages`);
 }
 
-export async function sendTicketMessage(ticketId: number, message: string): Promise<unknown> {
-  return apiClient.post<unknown>(`/tickets/${ticketId}/messages`, { message });
+export async function sendTicketMessage(ticketId: string, message: string): Promise<unknown> {
+  return apiClient.post<unknown>(`/tickets/${encodeURIComponent(ticketId)}/messages`, { message });
 }
