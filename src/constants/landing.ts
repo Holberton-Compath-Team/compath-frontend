@@ -30,8 +30,8 @@ export const HERO_CATEGORIES: HeroCategory[] = [
 export const EMERGENCY_BANNER = {
   icon: PhoneCall,
   text: "Təcili yardıma ehtiyacınız var? Kateqoriyadan asılı olmayaraq dərhal dəstək xəttinə müraciət edin.",
-  linkLabel: "Ətraflı bax",
-  href: "/services",
+  linkLabel: "Təcili dəstək",
+  href: "/emergency",
 };
 
 export interface ServiceCategory {

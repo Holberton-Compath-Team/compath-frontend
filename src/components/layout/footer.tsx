@@ -41,9 +41,12 @@ function Footer() {
               Əlaqə
             </h3>
             <p className="text-small mt-4 text-white/70">info@compath.edu.az</p>
-            <p className="text-small text-danger mt-2 font-medium">
-              Təcili və həssas mövzular Şəxsi-həssas kateqoriyası altında qeydə alınır.
-            </p>
+            <Link
+              href="/emergency"
+              className="text-small text-danger focus-visible:ring-ring focus-visible:ring-offset-ku-green-dark mt-2 inline-block rounded-lg font-medium underline underline-offset-2 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+            >
+              Təcili dəstək
+            </Link>
           </div>
         </div>
 

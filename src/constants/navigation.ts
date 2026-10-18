@@ -15,6 +15,7 @@ export const NAV_LINKS: NavLink[] = [
 export const SUPPORT_NAV_LINKS: NavLink[] = [
   { href: "/anonymous", label: "Anonim müraciət" },
   { href: "/track", label: "Müraciəti izlə" },
+  { href: "/emergency", label: "Təcili dəstək" },
 ];
 
 export interface PortalNavLink {
