@@ -16,6 +16,7 @@ import { ACADEMIC_SERVICE_FAQ } from "@/constants/faq";
 import {
   ACADEMIC_SERVICE_NAME,
   ADMINISTRATIVE_FINANCE_SERVICE_NAME,
+  DEFAULT_TICKET_PRIORITY,
   TICKET_PRIORITIES,
 } from "@/constants/tickets";
 import { ApiError } from "@/lib/api-client";
@@ -47,6 +48,7 @@ export function NewTicketForm() {
     formState: { errors, isSubmitting },
   } = useForm<CreateTicketFormValues>({
     resolver: zodResolver(createTicketSchema),
+    defaultValues: { priority: DEFAULT_TICKET_PRIORITY },
   });
 
   const department = useWatch({ control, name: "department" });
@@ -213,13 +215,9 @@ export function NewTicketForm() {
                 )}
                 aria-invalid={Boolean(errors.priority)}
                 aria-describedby={errors.priority ? "ticket-priority-error" : undefined}
-                disabled={isDone || TICKET_PRIORITIES.length === 0}
-                defaultValue=""
+                disabled={isDone}
                 {...register("priority")}
               >
-                <option value="">
-                  {TICKET_PRIORITIES.length === 0 ? "Tezliklə əlavə olunacaq" : "Prioritet seçin"}
-                </option>
                 {TICKET_PRIORITIES.map((priority) => (
                   <option key={priority} value={priority}>
                     {priority}

@@ -42,7 +42,7 @@ function Footer() {
             </h3>
             <p className="text-small mt-4 text-white/70">info@compath.edu.az</p>
             <p className="text-small text-danger mt-2 font-medium">
-              Təcili yardım: dəstək xətti tezliklə aktivləşəcək
+              Təcili və həssas mövzular Şəxsi-həssas kateqoriyası altında qeydə alınır.
             </p>
           </div>
         </div>

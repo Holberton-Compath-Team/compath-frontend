@@ -124,5 +124,5 @@ export const MOCK_TRUST_POINTS: TrustPoint[] = [
 
 export const MOCK_CONTACT_INFO: ContactInfo = {
   email: "info@compath.edu.az",
-  emergencyText: "Təcili yardım: dəstək xətti tezliklə aktivləşəcək",
+  emergencyText: "Təcili və həssas mövzular Şəxsi-həssas kateqoriyası altında qeydə alınır.",
 };

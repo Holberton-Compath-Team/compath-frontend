@@ -8,9 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardActions, CardContent, CardTitle } from "@/components/ui/card";
 import { inputVariants } from "@/components/ui/input";
 import {
-  DEFAULT_TICKET_PRIORITY_BADGE_VARIANT,
   DEFAULT_TICKET_STATUS_BADGE_VARIANT,
-  TICKET_PRIORITY_BADGE_VARIANT,
   TICKET_STATUS_BADGE_VARIANT,
   TICKET_STATUS_LABEL,
   TICKET_STATUSES,
@@ -21,6 +19,7 @@ import type { AdminTicket } from "@/types/ticket";
 import { getAdminTicketAuthorName, getAdminTicketId } from "@/utils/admin-ticket";
 import { cn } from "@/utils/cn";
 import { formatDate } from "@/utils/format-date";
+import { getTicketPriorityBadgeVariant, getTicketPriorityLabel } from "@/utils/ticket";
 
 interface AdminTicketCardProps {
   ticket: AdminTicket;
@@ -41,9 +40,8 @@ export function AdminTicketCard({ ticket }: AdminTicketCardProps) {
 
   const badgeVariant =
     TICKET_STATUS_BADGE_VARIANT[ticket.status] ?? DEFAULT_TICKET_STATUS_BADGE_VARIANT;
-  const priorityBadgeVariant = ticket.priority
-    ? (TICKET_PRIORITY_BADGE_VARIANT[ticket.priority] ?? DEFAULT_TICKET_PRIORITY_BADGE_VARIANT)
-    : undefined;
+  const priorityBadgeVariant = getTicketPriorityBadgeVariant(ticket.priority);
+  const priorityLabel = getTicketPriorityLabel(ticket.priority);
 
   return (
     <Card>
@@ -51,7 +49,7 @@ export function AdminTicketCard({ ticket }: AdminTicketCardProps) {
         <CardTitle className="min-w-0 break-words">{ticket.title}</CardTitle>
         <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
           <Badge variant={badgeVariant}>{TICKET_STATUS_LABEL[ticket.status] ?? ticket.status}</Badge>
-          {ticket.priority && <Badge variant={priorityBadgeVariant}>{ticket.priority}</Badge>}
+          <Badge variant={priorityBadgeVariant}>{priorityLabel}</Badge>
         </div>
       </div>
       <CardContent className="flex flex-col gap-2">

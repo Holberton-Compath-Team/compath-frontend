@@ -78,6 +78,52 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   return (await response.json()) as T;
 }
 
+interface UploadOptions {
+  onProgress?: (percent: number) => void;
+}
+
+function upload<T>(path: string, file: File, options: UploadOptions = {}): Promise<T> {
+  return new Promise((resolve, reject) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", `${API_BASE_URL}${path}`);
+
+    xhr.upload.onprogress = (event) => {
+      if (event.lengthComputable) {
+        options.onProgress?.((event.loaded / event.total) * 100);
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          resolve(JSON.parse(xhr.responseText) as T);
+        } catch {
+          reject(new ApiError(xhr.status, "Sorğu nəticəsi oxuna bilmədi"));
+        }
+        return;
+      }
+
+      let message = xhr.statusText || "Sorğu uğursuz oldu";
+      try {
+        const body = JSON.parse(xhr.responseText) as ApiErrorBody;
+        if (body.error) {
+          message = body.error;
+        }
+      } catch {
+        // Body boş və ya JSON deyil — statusText istifadə olunur.
+      }
+      reject(new ApiError(xhr.status, message));
+    };
+
+    xhr.onerror = () => reject(new ApiError(0, "Şəbəkə xətası baş verdi"));
+
+    xhr.send(formData);
+  });
+}
+
 export const apiClient = {
   get: <T>(path: string, options?: RequestOptions) =>
     request<T>(path, { ...options, method: "GET" }),
@@ -87,4 +133,6 @@ export const apiClient = {
     request<T>(path, { ...options, method: "PUT", body }),
   delete: <T>(path: string, options?: RequestOptions) =>
     request<T>(path, { ...options, method: "DELETE" }),
+  upload: <T>(path: string, file: File, options?: UploadOptions) =>
+    upload<T>(path, file, options),
 };

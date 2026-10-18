@@ -36,13 +36,37 @@ export const TICKET_MESSAGE_BUBBLE_CLASS: Record<TicketMessage["sender_role"], s
   admin: "bg-background",
 };
 
-// Backend priority enum-u hələ təsdiqlənməyib (FAZA G) — real dəyərlər gələndə
-// yalnız bu massiv doldurulacaq, dropdown/filtr/forma avtomatik aktiv olacaq.
-export const TICKET_PRIORITIES: string[] = [];
+export const TICKET_PRIORITIES: string[] = ["Aşağı", "Orta", "Yüksək", "Təcili"];
 
-export const TICKET_PRIORITY_BADGE_VARIANT: Record<string, BadgeVariant> = {};
+export const DEFAULT_TICKET_PRIORITY = "Orta";
 
-export const DEFAULT_TICKET_PRIORITY_BADGE_VARIANT: BadgeVariant = "default";
+export const TICKET_PRIORITY_BADGE_VARIANT: Record<string, BadgeVariant> = {
+  "Aşağı": "default",
+  "Orta": "accent",
+  "Yüksək": "warning",
+  "Təcili": "danger",
+  // Backend bəzən ingiliscə prioritet dəyərləri qaytarır — sabitləşənə qədər
+  // ehtimal olunan variantlar da əlavə olunur.
+  low: "default",
+  medium: "accent",
+  high: "warning",
+  urgent: "danger",
+};
+
+export const DEFAULT_TICKET_PRIORITY_BADGE_VARIANT: BadgeVariant = "accent";
+
+// Ekranda göstərilən mətn — backend ingiliscə/naməlum/boş dəyər qaytarsa belə
+// istifadəçi həmişə Azərbaycanca prioritet görür, naməlum dəyər "Orta" sayılır.
+export const TICKET_PRIORITY_LABEL: Record<string, string> = {
+  "Aşağı": "Aşağı",
+  "Orta": "Orta",
+  "Yüksək": "Yüksək",
+  "Təcili": "Təcili",
+  low: "Aşağı",
+  medium: "Orta",
+  high: "Yüksək",
+  urgent: "Təcili",
+};
 
 // Xidmət Kataloqundan gələn dəqiq adlar — FAQ Accordion və dinamik sahələr
 // bu adlarla (trim, case-sensitive) müqayisə olunur.
