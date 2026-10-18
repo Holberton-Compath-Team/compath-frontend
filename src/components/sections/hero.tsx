@@ -4,6 +4,7 @@ import { Container } from "@/components/ui/container";
 import { Section } from "@/components/ui/section";
 import { buttonVariants } from "@/components/ui/button";
 import { HERO_CATEGORIES, HERO_HEADLINE, HERO_SUBTEXT } from "@/constants/landing";
+import { SUPPORT_NAV_LINKS } from "@/constants/navigation";
 
 function Hero() {
   return (
@@ -14,13 +15,28 @@ function Hero() {
             {HERO_HEADLINE}
           </h1>
           <p className="text-body text-text-secondary max-w-lg">{HERO_SUBTEXT}</p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/register" className={buttonVariants({ variant: "primary" })}>
+          <div className="flex flex-col gap-3 tablet:flex-row tablet:flex-wrap">
+            <Link
+              href="/register"
+              className={buttonVariants({ variant: "primary", className: "w-full tablet:w-auto" })}
+            >
               Qeydiyyatdan keç
             </Link>
-            <Link href="/how-it-works" className={buttonVariants({ variant: "secondary" })}>
+            <Link
+              href="/how-it-works"
+              className={buttonVariants({ variant: "secondary", className: "w-full tablet:w-auto" })}
+            >
               Necə işləyir
             </Link>
+            {SUPPORT_NAV_LINKS.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className={buttonVariants({ variant: "secondary", className: "w-full tablet:w-auto" })}
+              >
+                {link.label}
+              </Link>
+            ))}
           </div>
         </div>
 

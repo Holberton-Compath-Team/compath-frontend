@@ -6,7 +6,7 @@ import { Menu, X } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { NAV_LINKS } from "@/constants/navigation";
+import { NAV_LINKS, SUPPORT_NAV_LINKS } from "@/constants/navigation";
 import { useAuthToken } from "@/hooks/use-auth-token";
 import { useAuthUser } from "@/hooks/use-auth-user";
 
@@ -46,6 +46,21 @@ function Header() {
           <nav aria-label="Əsas naviqasiya" className="tablet:block hidden">
             <ul className="flex items-center gap-6">
               {NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    className="text-small text-text-secondary hover:text-ku-green focus-visible:ring-ring rounded-lg transition-colors focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label="Dəstək naviqasiyası" className="laptop:flex hidden">
+            <ul className="flex items-center gap-4">
+              {SUPPORT_NAV_LINKS.map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}
@@ -120,6 +135,25 @@ function Header() {
               </li>
             ))}
           </ul>
+
+          <div className="flex flex-col gap-4">
+            <span className="text-caption text-text-secondary font-semibold tracking-wide uppercase">
+              Dəstək
+            </span>
+            <ul className="flex flex-col gap-4">
+              {SUPPORT_NAV_LINKS.map((link) => (
+                <li key={link.href}>
+                  <Link
+                    href={link.href}
+                    onClick={() => setIsMenuOpen(false)}
+                    className="text-h4 text-text-primary focus-visible:ring-ring block rounded-lg focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                  >
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div className="mt-auto flex flex-col gap-3">
             {token && user ? (

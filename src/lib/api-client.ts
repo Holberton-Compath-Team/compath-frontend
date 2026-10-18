@@ -14,6 +14,7 @@ export class ApiError extends Error {
 
 interface RequestOptions extends Omit<RequestInit, "body"> {
   body?: unknown;
+  skipAuth?: boolean;
 }
 
 interface ApiErrorBody {
@@ -33,7 +34,15 @@ async function resolveErrorMessage(response: Response): Promise<string> {
   return response.statusText || "Sorğu uğursuz oldu";
 }
 
-const UNAUTHENTICATED_PATHS = ["/login", "/signup"];
+const UNAUTHENTICATED_PATHS = ["/login", "/signup", "/tickets/anonymous"];
+const UNAUTHENTICATED_PATH_PREFIXES = ["/track/"];
+
+function isUnauthenticatedPath(path: string): boolean {
+  return (
+    UNAUTHENTICATED_PATHS.includes(path) ||
+    UNAUTHENTICATED_PATH_PREFIXES.some((prefix) => path.startsWith(prefix))
+  );
+}
 
 function redirectToLogin(): void {
   if (typeof window === "undefined") {
@@ -48,8 +57,8 @@ function redirectToLogin(): void {
 }
 
 async function request<T>(path: string, options: RequestOptions = {}): Promise<T> {
-  const { body, headers, ...rest } = options;
-  const token = getToken();
+  const { body, headers, skipAuth, ...rest } = options;
+  const token = skipAuth ? null : getToken();
 
   const response = await fetch(`${API_BASE_URL}${path}`, {
     ...rest,
@@ -64,7 +73,7 @@ async function request<T>(path: string, options: RequestOptions = {}): Promise<T
   if (!response.ok) {
     const message = await resolveErrorMessage(response);
 
-    if (response.status === 401 && !UNAUTHENTICATED_PATHS.includes(path)) {
+    if (response.status === 401 && !isUnauthenticatedPath(path)) {
       redirectToLogin();
     }
 

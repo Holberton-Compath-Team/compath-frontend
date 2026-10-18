@@ -60,3 +60,50 @@ export interface TicketMessage {
   message: string;
   created_at: string;
 }
+
+export interface AnonymousTicketPayload {
+  title: string;
+  description: string;
+  department: string;
+  authorName: string;
+  priority?: string;
+  attachedFiles: string[];
+}
+
+// POST /tickets/anonymous doğrulanmış cavab forması (canlı backend ilə
+// yoxlanılıb) — trackingCode üst səviyyədədir, uğur ekranı yalnız bunu
+// istifadə edir.
+export interface AnonymousTicketResponse {
+  message: string;
+  ticketId: string;
+  trackingCode: string;
+}
+
+/**
+ * Unverified: GET /track/<code> test zamanı messages həmişə boş qayıtdı,
+ * element sahələrinin dəqiq case-i doğrulanmayıb — qalan bütün cavab tam
+ * camelCase olduğu üçün bu fərz olunur.
+ */
+export interface TrackingMessage {
+  id: string;
+  sender: string;
+  senderRole: "student" | "admin";
+  message: string;
+  createdAt: string;
+}
+
+// GET /track/<code> doğrulanmış cavab forması (canlı backend ilə yoxlanılıb)
+// — flat (wrap olunmamış), backend "department" ilə yanaşı dublikat
+// "category" sahəsi də qaytarır.
+export interface TrackingResult {
+  trackingCode: string;
+  title: string;
+  description: string;
+  department: string;
+  category?: string;
+  status: string;
+  priority?: string;
+  createdAt?: string;
+  attachedFiles?: string[];
+  messages: TrackingMessage[];
+}

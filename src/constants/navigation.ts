@@ -12,6 +12,11 @@ export const NAV_LINKS: NavLink[] = [
   { href: "/about", label: "Haqqımızda" },
 ];
 
+export const SUPPORT_NAV_LINKS: NavLink[] = [
+  { href: "/anonymous", label: "Anonim müraciət" },
+  { href: "/track", label: "Müraciəti izlə" },
+];
+
 export interface PortalNavLink {
   href: string;
   label: string;
