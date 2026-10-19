@@ -17,6 +17,7 @@ export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const justRegistered = searchParams.get("registered") === "1";
+  const nextParam = searchParams.get("next");
   const [submitError, setSubmitError] = useState<string | null>(null);
 
   const {
@@ -32,7 +33,14 @@ export function LoginForm() {
 
     try {
       const response = await login(values.email, values.password);
-      router.push(response.user.role === "admin" ? "/admin/tickets" : "/dashboard");
+
+      if (response.user.role === "admin") {
+        router.push("/admin/tickets");
+      } else if (nextParam && nextParam.startsWith("/")) {
+        router.push(nextParam);
+      } else {
+        router.push("/dashboard");
+      }
     } catch (error) {
       setSubmitError(
         error instanceof ApiError ? error.message : "Gözlənilməz xəta baş verdi. Yenidən cəhd edin.",

@@ -33,6 +33,8 @@ export function NewTicketForm() {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const departmentParam = searchParams.get("department");
+  const priorityParam = searchParams.get("priority");
+  const descriptionParam = searchParams.get("description");
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [submitMessage, setSubmitMessage] = useState<string | null>(null);
   const [attachment, setAttachment] = useState<TicketFileUploadState>({
@@ -79,6 +81,15 @@ export function NewTicketForm() {
       setValue("department", departmentParam);
     }
   }, [departmentParam, services, setValue]);
+
+  useEffect(() => {
+    if (priorityParam && TICKET_PRIORITIES.includes(priorityParam)) {
+      setValue("priority", priorityParam);
+    }
+    if (descriptionParam) {
+      setValue("description", descriptionParam);
+    }
+  }, [priorityParam, descriptionParam, setValue]);
 
   async function onSubmit(values: CreateTicketFormValues) {
     setSubmitError(null);

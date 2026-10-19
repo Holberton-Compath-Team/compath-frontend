@@ -22,9 +22,9 @@ export const HERO_SUBTEXT =
   "COMPATH tələbənin akademik, inzibati-maliyyə və ya şəxsi-həssas ehtiyacını avtomatik olaraq doğru universitet xidmətinə yönləndirir.";
 
 export const HERO_CATEGORIES: HeroCategory[] = [
-  { icon: GraduationCap, label: "Akademik", href: "/services" },
-  { icon: Landmark, label: "İnzibati-Maliyyə", href: "/services" },
-  { icon: HeartHandshake, label: "Şəxsi-həssas", href: "/services" },
+  { icon: GraduationCap, label: "Akademik", href: "/needs-assessment?category=academic" },
+  { icon: Landmark, label: "İnzibati-Maliyyə", href: "/needs-assessment?category=administrative" },
+  { icon: HeartHandshake, label: "Şəxsi-həssas", href: "/needs-assessment?category=sensitive" },
 ];
 
 export const EMERGENCY_BANNER = {
@@ -48,21 +48,21 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
     title: "Akademik",
     description:
       "Dərs qeydiyyatı, imtahan, davamiyyət və akademik məsləhət ilə bağlı bütün müraciətlər.",
-    href: "/services",
+    href: "/needs-assessment?category=academic",
   },
   {
     icon: Landmark,
     title: "İnzibati-Maliyyə",
     description:
       "Sənəd dövriyyəsi, ödəniş, təqaüd və digər inzibati əməliyyatlar üçün yönləndirmə.",
-    href: "/services",
+    href: "/needs-assessment?category=administrative",
   },
   {
     icon: HeartHandshake,
     title: "Şəxsi-həssas",
     description:
       "Anonim və təhlükəsiz şəkildə həssas mövzularda dəstək xidmətlərinə çıxış.",
-    href: "/services",
+    href: "/needs-assessment?category=sensitive",
     urgent: true,
   },
 ];
